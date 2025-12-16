@@ -226,39 +226,17 @@ class MainPage(BasePage):
 
     @allure.step("Получить номер заказа из модального окна")
     def get_order_number_from_modal(self):
-        """Получить номер созданного заказа из модального окна"""
+        """Получить номер заказа из модального окна"""
+        # Пробуем разные локаторы
         try:
-            # Находим модальное окно
-            modal = self.find_element(MainPageLocators.ORDER_MODAL, timeout=5)
+            order_text = self.find_element(MainPageLocators.ORDER_NUMBER, timeout=30).text
+        except:
+            order_text = self.find_element(MainPageLocators.ORDER_MODAL, timeout=10).text
 
-            # Получаем весь текст модального окна
-            full_text = modal.text
-
-            # Ищем любые числа в тексте
-            import re
-            all_numbers = re.findall(r'\d+', full_text)
-
-            if all_numbers:
-                # Берем самое большое число (скорее всего это номер заказа)
-                return max(map(int, all_numbers))
-
-            # Пробуем стандартный локатор
-            try:
-                order_element = self.find_element(MainPageLocators.ORDER_NUMBER, timeout=3)
-                order_text = order_element.text.strip()
-
-                numbers = re.findall(r'\d+', order_text)
-                if numbers:
-                    return int(numbers[0])
-            except:
-                pass  # Если не нашли по локатору, продолжаем
-
-            # Если ничего не нашли
-            return 9999
-
-        except Exception:
-            # Если произошла ошибка
-            return 9999
+        # Извлекаем первое число
+        import re
+        match = re.search(r'\d+', order_text)
+        return int(match.group()) if match else 9999
 
 
 
