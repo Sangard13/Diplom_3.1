@@ -168,14 +168,14 @@ class BasePage:
         element = self.find_element(locator, timeout)
         return element.get_attribute(attribute_name)
 
+    @allure.step("Ожидать загрузку страницы")
     def wait_for_page_load(self, timeout=30):
         """
-        Простое ожидание без строгой проверки
+        Ожидание полной загрузки страницы
         """
-        print(f"Ожидаем загрузку страницы...")
-        time.sleep(3)  # Фиксированное ожидание
-        print(f"Текущий URL: {self.driver.current_url}")
-        return True
+        WebDriverWait(self.driver, timeout).until(
+            lambda d: d.execute_script("return document.readyState") == "complete"
+        )
 
     @allure.step("Ожидать появления текста в элементе")
     def wait_for_text_in_element(self, locator, text, timeout=10):
