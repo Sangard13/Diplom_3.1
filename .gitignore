@@ -1,0 +1,25 @@
+reports/
+allure-results*/
+screenshots/
+logs/
+*.log
+test-results/
+.cache/
+*.pyc
+.mypy_cache/
+# Драйверы браузеров
+chromedriver*
+geckodriver*
+
+# Конфиденциальные данные
+*.env
+config.local.py
+
+# Отчеты
+report*.html".idea/"
+*.swp
+*.swo
+".idea/"
+"__pycache__/"
+.pytest_cache/
+htmlcov/
